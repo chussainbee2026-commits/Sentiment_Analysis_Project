@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amazon Sentiment Analyzer</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Amazon Review Sentiment Analyzer</h1>
+    <p>Analyze a single review — or paste all reviews of a product for an overall verdict</p>
+  </header>
+
+  <main>
+
+    <!-- Mode Toggle -->
+    <div class="card mode-card">
+      <div class="mode-toggle">
+        <button id="btn-single" class="mode-btn active" onclick="setMode('single')">Single Review</button>
+        <button id="btn-multi"  class="mode-btn"        onclick="setMode('multi')">Product Reviews (Bulk)</button>
+      </div>
+      <p id="mode-hint" class="mode-hint">Analyze one review at a time</p>
+    </div>
+
+    <!-- Input Card -->
+    <div class="card">
+      <label id="input-label" for="review_text">Enter your review:</label>
+      <textarea id="review_text" placeholder="Paste your review here..." rows="5"></textarea>
+      <div class="char-count"><span id="char-count">0</span> characters</div>
+
+      <div class="btn-row">
+        <button id="analyze-btn" onclick="analyze()">🔍 Analyze</button>
+        <button id="clear-btn"   onclick="clearAll()">✖ Clear</button>
+      </div>
+
+      <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <span id="loading-text">Analyzing...</span>
+      </div>
+
+      <div id="error-msg" class="error hidden"></div>
+    </div>
+
+    <!-- Single Result -->
+    <div id="result-single" class="card result hidden">
+      <div class="result-top">
+        <span id="result-emoji"></span>
+        <div>
+          <div class="result-sub">Sentiment Result</div>
+          <div id="result-label"></div>
+        </div>
+      </div>
+      <div class="bars">
+        <div class="bar-row"><span>😊 Positive</span><div class="track"><div id="bar-pos" class="fill fill-pos"></div></div><span id="pct-pos">0%</span></div>
+        <div class="bar-row"><span>😞 Negative</span><div class="track"><div id="bar-neg" class="fill fill-neg"></div></div><span id="pct-neg">0%</span></div>
+        <div class="bar-row"><span>😐 Neutral</span> <div class="track"><div id="bar-neu" class="fill fill-neu"></div></div><span id="pct-neu">0%</span></div>
+      </div>
+      <div class="scores">
+        <div class="score-chip"><span class="score-label">VADER compound</span><span id="vader-score" class="score-val">—</span></div>
+        <div class="score-chip"><span class="score-label">TextBlob polarity</span><span id="tb-score" class="score-val">—</span></div>
+      </div>
+    </div>
+
+    <!-- Bulk / Product Result -->
+    <div id="result-bulk" class="hidden">
+
+      <!-- Overall verdict -->
+      <div id="overall-card" class="card result">
+        <div class="overall-header">
+          <span id="overall-emoji" class="overall-emoji"></span>
+          <div>
+            <div class="result-sub">Overall Product Sentiment</div>
+            <div id="overall-label"></div>
+            <div id="overall-desc" class="overall-desc"></div>
+          </div>
+        </div>
+
+        <!-- Aggregate bars -->
+        <div class="bars" style="margin-top:1.1rem">
+          <div class="bar-row"><span>😊 Positive</span><div class="track"><div id="ov-bar-pos" class="fill fill-pos"></div></div><span id="ov-pct-pos">0%</span></div>
+          <div class="bar-row"><span>😞 Negative</span><div class="track"><div id="ov-bar-neg" class="fill fill-neg"></div></div><span id="ov-pct-neg">0%</span></div>
+          <div class="bar-row"><span>😐 Neutral</span> <div class="track"><div id="ov-bar-neu" class="fill fill-neu"></div></div><span id="ov-pct-neu">0%</span></div>
+        </div>
+
+        <!-- Review count chips -->
+        <div class="scores" style="margin-top:1rem">
+          <div class="score-chip"><span class="score-label">Total reviews</span><span id="count-total" class="score-val">—</span></div>
+          <div class="score-chip pos-chip"><span class="score-label">Positive</span><span id="count-pos" class="score-val">—</span></div>
+          <div class="score-chip neg-chip"><span class="score-label">Negative</span><span id="count-neg" class="score-val">—</span></div>
+          <div class="score-chip neu-chip"><span class="score-label">Neutral</span><span id="count-neu" class="score-val">—</span></div>
+        </div>
+      </div>
+
+      <!-- Per-review breakdown -->
+      <div class="card" style="margin-top:1.1rem">
+        <div class="breakdown-title">📋 Per-review breakdown</div>
+        <div id="breakdown-list"></div>
+      </div>
+
+    </div>
+
+    <!-- Sample Reviews -->
+    <div class="card">
+      <div class="samples-title" id="samples-title">📌 Try a sample review</div>
+      <div class="samples" id="samples-container">
+
+        <!-- Single samples -->
+        <div class="sample pos-sample single-sample" onclick="loadSample(this)">
+          <span class="badge badge-pos">😊 Positive</span>
+          <p>This product exceeded all my expectations! Quality is outstanding, arrived early. Absolutely worth every penny!</p>
+        </div>
+        <div class="sample neg-sample single-sample" onclick="loadSample(this)">
+          <span class="badge badge-neg">😞 Negative</span>
+          <p>Terrible experience. Item arrived broken, customer service refused to help. Complete waste of money. Do NOT buy!</p>
+        </div>
+        <div class="sample neu-sample single-sample" onclick="loadSample(this)">
+          <span class="badge badge-neu">😐 Neutral</span>
+          <p>Product arrived on time. Does what it says. Nothing special but not bad either. Might buy again if price drops.</p>
+        </div>
+        <div class="sample pos-sample single-sample" onclick="loadSample(this)">
+          <span class="badge badge-pos">😊 Positive</span>
+          <p>Amazing quality! Fast shipping, looks exactly like the photos. Very happy with this purchase. Five stars!</p>
+        </div>
+
+        <!-- Bulk sample (hidden initially) -->
+        <div class="sample bulk-sample hidden" onclick="loadBulkSample()" style="grid-column:1/-1">
+          <span class="badge badge-neu">📦 Product — Mixed Reviews</span>
+          <p>Click to load 6 real-world mixed reviews for a product and see the overall sentiment verdict.</p>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script src="/static/main.js"></script>
+</body>
+</html>
