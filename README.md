@@ -8,7 +8,7 @@ This project allows users to enter product reviews, comments, or feedback and in
 
 # Live Demo
 
-## shttps://sentiment-analysis-project-utl1.onrender.com/
+## https://sentiment-analysis-project-utl1.onrender.com/
 
 ##  Features
 
