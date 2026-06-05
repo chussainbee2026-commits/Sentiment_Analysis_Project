@@ -12,7 +12,6 @@ This project allows users to enter product reviews, comments, or feedback and in
 
 ##  Features
 
-- Analyze customer reviews and feedback
 - Detect Positive and Negative sentiments
 - User-friendly web interface
 - Fast sentiment prediction
