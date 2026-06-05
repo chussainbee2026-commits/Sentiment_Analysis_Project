@@ -164,10 +164,6 @@ Aspiring Software Developer passionate about:
 
 Python Development | Web Technologies | AI Development | Artificial Intelligence
 
-GitHub:
-https://github.com/chussainbee2026-commits
-
-
 
 ##  Support
 
