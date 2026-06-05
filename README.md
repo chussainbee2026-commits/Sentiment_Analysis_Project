@@ -6,7 +6,9 @@ The Sentiment Analysis Project is a Machine Learning and Natural Language Proces
 
 This project allows users to enter product reviews, comments, or feedback and instantly receive sentiment predictions. It is useful for businesses, customer feedback analysis, social media monitoring, and opinion mining.
 
+# Live Demo
 
+## shttps://sentiment-analysis-project-utl1.onrender.com/
 
 ##  Features
 
@@ -159,8 +161,9 @@ Example of a review classified as Negative.
 
 **Hussain Bee & Akram Hussain**
 
+Aspiring Software Developer passionate about:
 
-Aspiring Software Engineer
+Python Development | Web Technologies | AI Development | Artificial Intelligence
 
 GitHub:
 https://github.com/chussainbee2026-commits
