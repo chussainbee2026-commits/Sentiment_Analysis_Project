@@ -146,7 +146,6 @@ Example of a review classified as Negative.
 
 ##  Future Enhancements
 
-- Neutral Sentiment Detection
 - Multi-Class Sentiment Classification
 - Deep Learning Models
 - Sentiment Visualization Charts
