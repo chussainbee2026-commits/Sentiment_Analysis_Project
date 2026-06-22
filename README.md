@@ -153,16 +153,13 @@ Example of a review classified as Negative.
 - Database Integration
 - API Deployment
 
+## Authors
 
+Hussain Bee & Akram Hussain
 
-##  Author
+Aspiring Software Developers | Python Enthusiasts | Data Analytics & AI Learners
 
-**Hussain Bee & Akram Hussain**
-
-Aspiring Software Developer passionate about:
-
-Python Development | Web Technologies | AI Development | Artificial Intelligence
-
+Passionate about Software Development, Data Analytics, Artificial Intelligence, Web Technologies, Automation, and Problem Solving. Dedicated to continuous learning and building innovative, scalable, and impactful solutions that deliver exceptional user experiences.
 
 ##  Support
 
