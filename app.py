@@ -349,10 +349,14 @@ def dataset_stats():
 # Run the Flask App
 # Debug=True shows helpful error messages during development
 # ============================================================
+import os
+
 if __name__ == "__main__":
     print("=" * 50)
-    print("  Amazon Sentiment Analyzer is starting...")
-    print("  Open your browser and go to:")
-    print("  http://localhost:5000")
+    print("Amazon Sentiment Analyzer is starting...")
     print("=" * 50)
-    app.run(debug=True, port=5000)
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000)),
+        debug=False
+    )
